@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'node:fs/promises';
-import fse from 'fs-extra';
 import * as prettier from 'prettier';
 
 function pascalCase(string) {
@@ -30,7 +29,7 @@ async function run() {
   });
 
   // Find the demos of the component
-  const docSource = await fse.readFile(
+  const docSource = await fs.readFile(
     path.join(process.cwd(), `docs/pages/material-ui/${args[0]}.js`),
     'utf8',
   );
@@ -116,8 +115,8 @@ ${renders.join('\n')}
     ...prettierConfig,
     filepath: viteFilepath,
   });
-  await fse.mkdirp(`apps/pigment-css-vite-app/src/pages/material-ui`);
-  await fse.writeFile(viteFilepath, prettiedViteFileContent);
+  await fs.mkdir(`apps/pigment-css-vite-app/src/pages/material-ui`, { recursive: true });
+  await fs.writeFile(viteFilepath, prettiedViteFileContent);
 }
 
 run();
