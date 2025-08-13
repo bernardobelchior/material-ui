@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'node:fs/promises';
 import fse from 'fs-extra';
 import * as prettier from 'prettier';
 
@@ -36,7 +37,7 @@ async function run() {
   const matches = docSource.match(/\/([a-z-]+)\.md\?/);
   const dataFolderName = matches[1];
 
-  const filenames = await fse.readdir(
+  const filenames = await fs.readdir(
     path.join(process.cwd(), `docs/data/material/components/${dataFolderName}`),
   );
   const tsFiles = filenames.filter((filename) => filename.endsWith('.tsx'));
@@ -83,8 +84,8 @@ ${renders.join('\n')}
     ...prettierConfig,
     filepath: nextFilepath,
   });
-  await fse.mkdirp(`apps/pigment-css-next-app/src/app/material-ui/${args[0]}`);
-  await fse.writeFile(nextFilepath, prettiedNextFileContent);
+  await fs.mkdir(`apps/pigment-css-next-app/src/app/material-ui/${args[0]}`, { recursive: true });
+  await fs.writeFile(nextFilepath, prettiedNextFileContent);
 
   /**
    * Zero-Runtime Vite App
