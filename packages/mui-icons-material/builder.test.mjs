@@ -17,6 +17,17 @@ const MUI_ICONS_SVG_DIR = path.join(MUI_ICONS_ROOT, 'svg');
 const GAME_ICONS_ROOT = path.join(currentDirectory, './fixtures/game-icons/');
 const GAME_ICONS_SVG_DIR = path.join(GAME_ICONS_ROOT, 'svg/icons/');
 
+async function emptyDir(dir) {
+  let items;
+  try {
+    items = await fs.promises.readdir(dir);
+  } catch {
+    return fs.promises.mkdir(dir, { recursive: true });
+  }
+
+  return Promise.all(items.map((item) => fs.rm(path.join(dir, item), { recursive: true })));
+}
+
 describe('builder', () => {
   describe('#getComponentName', () => {
     it('should change capitalize dashes', () => {
