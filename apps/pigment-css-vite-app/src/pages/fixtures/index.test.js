@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'node:fs/promises';
 import { chromium } from '@playwright/test';
 
 async function main() {
